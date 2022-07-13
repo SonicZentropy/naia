@@ -42,13 +42,8 @@ impl Socket {
         let server_url = parse_server_url(server_session_url);
         let server_socket_addr = url_to_socket_addr(&server_url);
 
-        #[cfg(not(target_os = "windows"))]
         let client_ip_address =
             find_my_ip_address().expect("cannot find host's current IP address");
-
-        // Windows is incompatible with find_my_ip
-        #[cfg(target_os = "windows")]
-        let client_ip_address = "0.0.0.0";
 
         let socket = Arc::new(Mutex::new(UdpSocket::bind((client_ip_address, 0)).unwrap()));
         socket
